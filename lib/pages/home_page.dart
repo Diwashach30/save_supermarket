@@ -13,7 +13,7 @@ class HomePage extends StatelessWidget {
       body: const Center(
         child: Text("Welcome to $market Supermarket"),
       ),
-      drawer: Drawer(),
+      drawer: const Drawer(),
     );
   }
 }
