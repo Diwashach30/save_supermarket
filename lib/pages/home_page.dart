@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:save_supermarket/widgets/drawer.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -13,7 +14,7 @@ class HomePage extends StatelessWidget {
       body: const Center(
         child: Text("Welcome to $market Supermarket"),
       ),
-      drawer: const Drawer(),
+      drawer: const MyDrawer(),
     );
   }
 }
