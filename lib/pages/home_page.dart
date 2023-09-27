@@ -3,16 +3,18 @@ import 'package:flutter/services.dart';
 import 'dart:convert';
 import 'package:save_supermarket/models/products.dart';
 import 'package:save_supermarket/widgets/drawer.dart';
-import 'package:save_supermarket/widgets/item_widget.dart';
+// import 'package:save_supermarket/widgets/item_widget.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-
   @override
-  State<HomePage> createState() => _HomePageState();
+  _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  final int days = 30;
+
+  final String name = "Codepur";
+
   @override
   void initState() {
     super.initState();
@@ -20,8 +22,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   loadData() async {
-    var catalogJson = await rootBundle.loadString("assets/files/catalog.json");
-    var decodedData = jsonDecode(catalogJson);
+    await Future.delayed(Duration(seconds: 2));
+    final catalogJson =
+        await rootBundle.loadString("assets/files/catalog.json");
+    final decodedData = jsonDecode(catalogJson);
     var productsData = decodedData["products"];
     ProductModel.items = List.from(productsData)
         .map<Item>((item) => Item.fromMap(item))
@@ -33,18 +37,54 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Save Supermarket"),
+        title: Text("Save Supermarket"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: ListView.builder(
-          itemCount: ProductModel.items.length,
-          itemBuilder: (context, index) {
-            return ItemWidget(
-              item: ProductModel.items[index],
-            );
-          },
-        ),
+        child: (ProductModel.items.isNotEmpty)
+            ? GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 16,
+                  crossAxisSpacing: 16,
+                ),
+                itemBuilder: (context, index) {
+                  final item = ProductModel.items[index];
+                  return Card(
+                      clipBehavior: Clip.antiAlias,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                      child: GridTile(
+                        header: Container(
+                          child: Text(
+                            item.name,
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Colors.deepPurple,
+                          ),
+                        ),
+                        child: Image.network(
+                          item.image,
+                        ),
+                        footer: Container(
+                          child: Text(
+                            item.price.toString(),
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                          ),
+                        ),
+                      ));
+                },
+                itemCount: ProductModel.items.length,
+              )
+            : Center(
+                child: CircularProgressIndicator(),
+              ),
       ),
       drawer: const MyDrawer(),
     );
