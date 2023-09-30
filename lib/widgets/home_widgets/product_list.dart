@@ -59,7 +59,7 @@ class ProductItem extends StatelessWidget {
                 alignment: MainAxisAlignment.spaceBetween,
                 buttonPadding: EdgeInsets.zero,
                 children: [
-                  "Rs ${product.price}".text.bold.xl.make(),
+                  "Rs ${product.price}".text.bold.size(4).make(),
                   ElevatedButton(
                     onPressed: () {},
                     style: ButtonStyle(
@@ -69,10 +69,10 @@ class ProductItem extends StatelessWidget {
                         shape: MaterialStateProperty.all(
                           const StadiumBorder(),
                         )),
-                    child: "Buy".text.make(),
+                    child: "Order".text.size(2).make(),
                   )
                 ],
-              ).pOnly(right: 8.0)
+              )
             ],
           ))
         ],
